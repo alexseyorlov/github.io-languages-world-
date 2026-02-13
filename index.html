@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Топ-15 языков мира</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Sora', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 25%, #1a2a2a 50%, #1a1f3a 75%, #0a0e27 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 15%, rgba(168, 85, 247, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* БОЛЬШОЙ ГЛОБУС НА ФОНЕ */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            height: 60vw;
+            max-width: 900px;
+            max-height: 900px;
+            background: 
+                radial-gradient(circle, rgba(100, 150, 200, 0.08) 0%, transparent 70%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><style>.grid-line{stroke:rgba(150,180,220,0.15);stroke-width:0.5;}</style></defs><circle cx="100" cy="100" r="95" fill="none" stroke="rgba(100,150,200,0.08)" stroke-width="1"/><circle cx="100" cy="100" r="85" fill="none" stroke="rgba(100,150,200,0.06)" stroke-width="0.5"/><circle cx="100" cy="100" r="75" fill="none" stroke="rgba(100,150,200,0.06)" stroke-width="0.5"/><line x1="100" y1="5" x2="100" y2="195" class="grid-line"/><line x1="5" y1="100" x2="195" y2="100" class="grid-line"/><line x1="30" y1="30" x2="170" y2="170" class="grid-line"/><line x1="170" y1="30" x2="30" y2="170" class="grid-line"/><circle cx="100" cy="100" r="50" fill="none" stroke="rgba(34,197,94,0.05)" stroke-width="0.5"/><path d="M 100 100 L 140 70" stroke="rgba(59,130,246,0.06)" stroke-width="1"/><path d="M 100 100 L 60 140" stroke="rgba(34,197,94,0.06)" stroke-width="1"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .container {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.88) 0%, rgba(26, 31, 58, 0.88) 100%);
+            border-radius: 32px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                0 0 60px rgba(34, 197, 94, 0.1);
+            max-width: 1600px;
+            width: 100%;
+            padding: 60px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            background: linear-gradient(135deg, #22c55e 0%, #3b82f6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            font-size: 64px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.72);
+            margin-bottom: 45px;
+            font-size: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 50px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 16px 36px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        
+        .tab-button:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #22c55e 0%, #3b82f6 100%);
+            border-color: transparent;
+            color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+            font-size: 16px;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: grid;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .stats {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .stat-box {
+            padding: 32px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #22c55e, #3b82f6, #06b6d4, transparent);
+        }
+        
+        .stat-box:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(34, 197, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.58);
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+        
+        .stat-value {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #22c55e 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.1;
+        }
+        
+        .stat-percent {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.70);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .legend {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.80);
+            font-weight: 600;
+        }
+        
+        .legend-color {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .languages-table {
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .languages-table h3 {
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.97);
+            font-size: 28px;
+            font-weight: 800;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+        
+        thead {
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+            color: rgba(255, 255, 255, 0.97);
+        }
+        
+        th {
+            padding: 20px 18px;
+            text-align: left;
+            font-weight: 800;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1.3px;
+        }
+        
+        td {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 15px;
+        }
+        
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+        
+        .rank {
+            font-weight: 800;
+            background: linear-gradient(135deg, #22c55e, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+        }
+        
+        .lang-name {
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.97);
+            font-size: 16px;
+        }
+        
+        .continents-breakdown {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .continent-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 600;
+        }
+        
+        .continent-box {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        
+        .speakers {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 700;
+        }
+        
+        .percentage {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 700;
+        }
+        
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        
+        th.sortable::after {
+            content: ' ⇅';
+            opacity: 0.3;
+            font-size: 13px;
+        }
+        
+        th.sortable:hover::after {
+            opacity: 0.8;
+        }
+        
+        th.sortable.sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+            color: rgba(34, 197, 94, 0.85);
+        }
+        
+        th.sortable.sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
+            color: rgba(34, 197, 94, 0.85);
+        }
+        
+        @media (max-width: 1200px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-wrapper {
+                height: 500px;
+            }
+            
+            .container {
+                padding: 40px;
+            }
+            
+            h1 {
+                font-size: 48px;
+            }
+            
+            .stat-value {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            body::after {
+                width: 70vw;
+                height: 70vw;
+            }
+            
+            .container {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 40px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .legend {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            td, th {
+                padding: 14px;
+            }
+        }
+        
+        .sources {
+            margin-top: 60px;
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+            border-radius: 20px;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.78);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .sources h4 {
+            color: rgba(255, 255, 255, 0.97);
+            margin-bottom: 18px;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        
+        .sources ol {
+            margin-left: 25px;
+            line-height: 2;
+        }
+        
+        .sources li {
+            margin-bottom: 12px;
+        }
+        
+        .sources a {
+            color: rgba(34, 197, 94, 0.85);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .sources a:hover {
+            color: rgba(34, 197, 94, 1);
+            border-color: rgba(34, 197, 94, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Топ-15 языков мира</h1>
+        <p class="subtitle">Распределение 3.68 млрд говорящих по континентам</p>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('distribution')">По дистрибуции континентов</button>
+            <button class="tab-button" onclick="switchTab('speakers')">По числу говорящих</button>
+        </div>
+        
+        <!-- ВКЛАДКА 1: РАСПРЕДЕЛЕНИЕ ПО КОНТИНЕНТАМ -->
+        <div id="distribution" class="tab-content active">
+            <div class="content">
+                <div class="chart-wrapper">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Всего говорящих</div>
+                        <div class="stat-value">3.68 млрд</div>
+                        <div class="stat-percent">на топ-15 языках мира</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Доля населения</div>
+                        <div class="stat-value">45.4%</div>
+                        <div class="stat-percent">от 8.1 млрд человек на Земле</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Максимум региона</div>
+                        <div class="stat-value">Азия</div>
+                        <div class="stat-percent">2.89 млрд говорящих (60.2%)</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Языков с 2+ континентами</div>
+                        <div class="stat-value">8 из 15</div>
+                        <div class="stat-percent">Англ., франц., испан. и др.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #22c55e;"></div>
+                    <span>🌏 Азия</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #3b82f6;"></div>
+                    <span>🌎 Америка</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #06b6d4;"></div>
+                    <span>🌍 Европа</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f59e0b;"></div>
+                    <span>🌍 Африка</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ec4899;"></div>
+                    <span>🌏 Океания</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #8b5cf6;"></div>
+                    <span>🌏 Юж. Азия</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ВКЛАДКА 2: ПО ЧИСЛУ ГОВОРЯЩИХ -->
+        <div id="speakers" class="tab-content">
+            <div class="content">
+                <div class="chart-wrapper">
+                    <canvas id="speakersChart"></canvas>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Лидер рейтинга</div>
+                        <div class="stat-value">Мандарин</div>
+                        <div class="stat-percent">929 млн (11.5% всех людей)</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Топ-3 языка</div>
+                        <div class="stat-value">2.28 млрд</div>
+                        <div class="stat-percent">Мандарин + Испанский + Английский</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Медиана языка</div>
+                        <div class="stat-value">125 млн</div>
+                        <div class="stat-percent">Среднее значение топ-15</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-label">Минимум</div>
+                        <div class="stat-value">76 млн</div>
+                        <div class="stat-percent">Немецкий язык (15-е место)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ПОДРОБНАЯ ТАБЛИЦА -->
+        <div class="languages-table">
+            <h3>📊 Детальная таблица топ-15 языков</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 4%">#</th>
+                        <th style="width: 22%" class="sortable" onclick="sortTable(this, 'text')">Язык</th>
+                        <th style="width: 50%" class="sortable" onclick="sortTable(this, 'continents')">Распределение по континентам</th>
+                        <th style="width: 12%" class="speakers sortable" onclick="sortTable(this, 'number')">Всего говорящих</th>
+                        <th style="width: 12%" class="percentage sortable" onclick="sortTable(this, 'number')">% мира</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rank">1</td>
+                        <td class="lang-name">Мандаринский<br>китайский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #22c55e;"></div>Азия 929м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">929 млн</td>
+                        <td class="percentage">11.47%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">2</td>
+                        <td class="lang-name">Испанский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #3b82f6;"></div>Америка 400м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #06b6d4;"></div>Европа 45м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #f59e0b;"></div>Африка 30м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">474.7 млн</td>
+                        <td class="percentage">5.86%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">3</td>
+                        <td class="lang-name">Английский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #06b6d4;"></div>Европа 70м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #3b82f6;"></div>Америка 230м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #22c55e;"></div>Азия 70м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">372.9 млн</td>
+                        <td class="percentage">4.60%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">4</td>
+                        <td class="lang-name">Хинди</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #8b5cf6;"></div>Юж. Азия 343м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">343.9 млн</td>
+                        <td class="percentage">4.25%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">5</td>
+                        <td class="lang-name">Арабский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #f59e0b;"></div>Африка 200м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #22c55e;"></div>Западн. Азия 74м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">274 млн</td>
+                        <td class="percentage">3.38%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">6</td>
+                        <td class="lang-name">Бенгальский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #8b5cf6;"></div>Юж. Азия 228м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">228 млн</td>
+                        <td class="percentage">2.81%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">7</td>
+                        <td class="lang-name">Португальский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #3b82f6;"></div>Америка 220м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #f59e0b;"></div>Африка 5м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">220 млн</td>
+                        <td class="percentage">2.72%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">8</td>
+                        <td class="lang-name">Русский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #06b6d4;"></div>Европа 150м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">150 млн</td>
+                        <td class="percentage">1.85%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">9</td>
+                        <td class="lang-name">Японский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #22c55e;"></div>Восточн. Азия 125м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">125.4 млн</td>
+                        <td class="percentage">1.55%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">10</td>
+                        <td class="lang-name">Панджаби</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #8b5cf6;"></div>Юж. Азия 125м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">125 млн</td>
+                        <td class="percentage">1.54%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">11</td>
+                        <td class="lang-name">Мараттхи</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #8b5cf6;"></div>Юж. Азия 99м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">99.1 млн</td>
+                        <td class="percentage">1.22%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">12</td>
+                        <td class="lang-name">Телугу</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #8b5cf6;"></div>Юж. Азия 96м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">95.7 млн</td>
+                        <td class="percentage">1.18%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">13</td>
+                        <td class="lang-name">Корейский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #22c55e;"></div>Восточн. Азия 82м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">81.7 млн</td>
+                        <td class="percentage">1.01%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">14</td>
+                        <td class="lang-name">Французский</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #06b6d4;"></div>Европа 45м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #f59e0b;"></div>Африка 25м</div>
+                                <div class="continent-bar"><div class="continent-box" style="background: #3b82f6;"></div>Америка 7м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">79.9 млн</td>
+                        <td class="percentage">0.99%</td>
+                    </tr>
+                    <tr>
+                        <td class="rank">15</td>
+                        <td class="lang-name">Немецкий</td>
+                        <td>
+                            <div class="continents-breakdown">
+                                <div class="continent-bar"><div class="continent-box" style="background: #06b6d4;"></div>Европа 76м</div>
+                            </div>
+                        </td>
+                        <td class="speakers">76 млн</td>
+                        <td class="percentage">0.94%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- ИСТОЧНИКИ -->
+        <div class="sources">
+            <h4>📚 Источники данных</h4>
+            <ol>
+                <li><strong>Ethnologue: Languages of the World</strong> (издание 2025) — основной источник данных о носителях языков. <a href="https://www.ethnologue.com" target="_blank">ethnologue.com</a></li>
+                
+                <li><strong>Испанский язык:</strong> Данные Atlasreal и исследования RAE (Real Academia Española). <a href="https://www.atlasreal.com" target="_blank">AtlasReal</a></li>
+                
+                <li><strong>Английский язык:</strong> World Bank и Британский совет (British Council).</li>
+                
+                <li><strong>Французский язык:</strong> Organization Internationale de la Francophonie (OIF). <a href="https://www.francophonie.org" target="_blank">francophonie.org</a></li>
+                
+                <li><strong>Арабский язык:</strong> ALECSO (Arab League Educational, Cultural and Scientific Organization).</li>
+                
+                <li><strong>Индийские языки:</strong> Census of India 2011 (актуализировано на 2024).</li>
+                
+                <li><strong>Население мира:</strong> United Nations Population Division (UNPD) — 8.1 млрд человек на февраль 2025 года.</li>
+            </ol>
+            <p style="margin-top: 16px; font-style: italic; color: rgba(255, 255, 255, 0.65); line-height: 1.6;"><strong>Примечание:</strong> Данные показывают только родных говорящих (L1). Если учитывать говорящих, для которых язык не является родным (L2, L3+), цифры будут существенно выше. Например, английский язык используют более 1.5 млрд человек.</p>
+        </div>
+    </div>
+    
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            setTimeout(() => {
+                if (window.distributionChart) window.distributionChart.resize();
+                if (window.speakersChart) window.speakersChart.resize();
+            }, 100);
+        }
+        
+        function sortTable(headerCell, dataType) {
+            const table = headerCell.closest('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const columnIndex = Array.from(headerCell.parentNode.children).indexOf(headerCell);
+            
+            table.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            const isAscending = !headerCell.classList.contains('sort-asc');
+            
+            rows.sort((a, b) => {
+                let aValue = a.children[columnIndex];
+                let bValue = b.children[columnIndex];
+                
+                let aText, bText;
+                
+                if (dataType === 'text') {
+                    aText = aValue.textContent.trim();
+                    bText = bValue.textContent.trim();
+                    return isAscending ? 
+                        aText.localeCompare(bText, 'ru') : 
+                        bText.localeCompare(aText, 'ru');
+                } 
+                else if (dataType === 'number') {
+                    aText = parseFloat(aValue.textContent.replace(/[^0-9.-]/g, ''));
+                    bText = parseFloat(bValue.textContent.replace(/[^0-9.-]/g, ''));
+                    return isAscending ? aText - bText : bText - aText;
+                }
+                else if (dataType === 'continents') {
+                    aText = aValue.textContent.trim();
+                    bText = bValue.textContent.trim();
+                    return isAscending ? 
+                        aText.localeCompare(bText, 'ru') : 
+                        bText.localeCompare(aText, 'ru');
+                }
+            });
+            
+            rows.forEach(row => tbody.appendChild(row));
+            
+            if (isAscending) {
+                headerCell.classList.add('sort-asc');
+            } else {
+                headerCell.classList.add('sort-desc');
+            }
+        }
+        
+        // ГРАФИК 1: РАСПРЕДЕЛЕНИЕ ПО КОНТИНЕНТАМ
+        const ctxDist = document.getElementById('distributionChart').getContext('2d');
+        window.distributionChart = new Chart(ctxDist, {
+            type: 'bar',
+            data: {
+                labels: ['Мандарин', 'Испанский', 'Английский', 'Хинди', 'Арабский', 'Бенгальский', 'Португальский', 'Русский', 'Японский', 'Панджаби', 'Мараттхи', 'Телугу', 'Корейский', 'Французский', 'Немецкий'],
+                datasets: [
+                    {
+                        label: 'Азия',
+                        data: [929, 0, 70, 343.9, 74, 228, 0, 0, 125.4, 125, 99.1, 95.7, 81.7, 0, 0],
+                        backgroundColor: '#22c55e',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Америка',
+                        data: [0, 400, 230, 0, 0, 0, 220, 0, 0, 0, 0, 0, 0, 7, 0],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Европа',
+                        data: [0, 45, 70, 0, 0, 0, 0, 150, 0, 0, 0, 0, 0, 45, 76],
+                        backgroundColor: '#06b6d4',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Африка',
+                        data: [0, 30, 0, 0, 200, 0, 5, 0, 0, 0, 0, 0, 0, 25, 0],
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 14, weight: 'bold' },
+                            color: 'rgba(255, 255, 255, 0.88)',
+                            padding: 18,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 14, 39, 0.95)',
+                        titleColor: 'rgba(255, 255, 255, 0.98)',
+                        bodyColor: 'rgba(255, 255, 255, 0.88)',
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        padding: 14,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: { color: 'rgba(255, 255, 255, 0.65)', font: { size: 12 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: { color: 'rgba(255, 255, 255, 0.75)', font: { size: 13, weight: 'bold' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+        
+        // ГРАФИК 2: ПО ЧИСЛУ ГОВОРЯЩИХ
+        const ctxSpeakers = document.getElementById('speakersChart').getContext('2d');
+        window.speakersChart = new Chart(ctxSpeakers, {
+            type: 'bar',
+            data: {
+                labels: ['Мандарин', 'Испанский', 'Английский', 'Хинди', 'Арабский', 'Бенгальский', 'Португальский', 'Русский', 'Японский', 'Панджаби', 'Мараттхи', 'Телугу', 'Корейский', 'Французский', 'Немецкий'],
+                datasets: [{
+                    label: 'Количество говорящих (млн)',
+                    data: [929, 474.7, 372.9, 343.9, 274, 228, 220, 150, 125.4, 125, 99.1, 95.7, 81.7, 79.9, 76],
+                    backgroundColor: [
+                        '#22c55e', '#16a34a', '#15803d', '#3b82f6', '#1d4ed8',
+                        '#06b6d4', '#0891b2', '#06b6d4', '#22c55e', '#8b5cf6',
+                        '#8b5cf6', '#8b5cf6', '#22c55e', '#06b6d4', '#06b6d4'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 14, 39, 0.95)',
+                        titleColor: 'rgba(255, 255, 255, 0.98)',
+                        bodyColor: 'rgba(255, 255, 255, 0.88)',
+                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                        borderWidth: 1,
+                        padding: 14,
+                        callbacks: {
+                            label: function(context) {
+                                let pct = ((context.parsed.x / 8100) * 100).toFixed(2);
+                                return context.parsed.x + ' млн (' + pct + '%)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: 'rgba(255, 255, 255, 0.65)', font: { size: 12 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    y: {
+                        ticks: { color: 'rgba(255, 255, 255, 0.75)', font: { size: 13, weight: 'bold' } },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
